@@ -1,0 +1,3 @@
+c = "C (GCC 10.2.0)"
+cpp = "C++ (GCC 10.2.0)"
+python = "Python (CPython 3.10.0)"

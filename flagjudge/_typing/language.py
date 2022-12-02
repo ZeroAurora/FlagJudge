@@ -1,0 +1,1 @@
+Languages = dict[str, str]

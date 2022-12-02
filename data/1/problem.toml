@@ -1,0 +1,21 @@
+id = 1
+title = "A+B Problem"
+description = '''
+A+B Problem
+'''
+instruction = '''
+'''
+accepted_languages = ["c", "cpp", "python"]
+flag = "Flag{A+B=C}"
+
+[limit]
+time = 1 # in s
+memory = 256 # in mb
+
+[[samples]]
+stdin = '''
+1 2
+'''
+stdout = '''
+3
+'''

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}FlagJudge - {{ problem.title }}{% endblock title %}
+{% block container %}
+<h1>{{ problem.title }}</h1>
+<p>
+  <b>时间限制：{{ problem.limit.time }} s</b>
+  <br />
+  <b>内存限制：{{ problem.limit.memory }} mb</b>
+</p>
+<h2>题面</h2>
+{{ problem.description|markdown }}
+<h2>指示</h2>
+{{ problem.instruction|markdown }}
+<h2>样例</h2>
+<table class="table">
+  <thead>
+    <th scope="col">输入</th>
+    <th scope="col">输出</th>
+  </thead>
+  <tbody>
+    {% for sample in problem.samples %}
+    <tr>
+      <th>
+        <pre><code>{{ sample.stdin }}</code></pre>
+      </th>
+      <td>
+        <pre><code>{{ sample.stdout }}</code></pre>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<!--TODO-->
+<h2>提交代码</h2>
+<div class="border" id="monaco" style="height: 50vh;"></div>
+{% endblock container %}
+{% block jsarea %}
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs/loader.js"></script>
+<script>
+  require.config({
+    paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs" },
+  });
+
+  require(["vs/editor/editor.main"], function () {
+    var editor = monaco.editor.create(document.getElementById("monaco"), {
+      minimap: {
+        enabled: false,
+      },
+      value: "",
+      language: "python",
+    });
+  });
+</script>
+{% endblock jsarea %}

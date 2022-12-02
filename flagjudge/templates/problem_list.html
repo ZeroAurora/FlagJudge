@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}FlagJudge - 目录{% endblock title %}
+{% block container %}
+<h1>FlagJudge - 目录</h1>
+<table class="table">
+  <thead>
+    <th scope="col">#</th>
+    <th scope="col">题目</th>
+  </thead>
+  <tbody>
+    {% for problem in problems.values() %}
+    <tr>
+      <th scope="row">{{ problem.id }}</th>
+      <td><a href="/{{ problem.id }}/">{{ problem.title }}</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock container %}
