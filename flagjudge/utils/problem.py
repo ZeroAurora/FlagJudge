@@ -1,8 +1,6 @@
 import tomllib
 from pathlib import Path
 
-from flask import g
-
 from flagjudge import app
 from flagjudge._typing.problem import *
 
