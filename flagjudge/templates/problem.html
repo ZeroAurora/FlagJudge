@@ -14,17 +14,19 @@
 <h2>指示</h2>
 {{ problem.instruction|markdown }}
 <h2>样例</h2>
-<table class="table">
+<table class="table table-bordered">
   <thead>
-    <th scope="col">输入</th>
-    <th scope="col">输出</th>
+    <tr>
+      <th class="w-50" scope="col">输入</th>
+      <th class="w-50" scope="col">输出</th>
+    </tr>
   </thead>
   <tbody>
     {% for sample in problem.samples %}
     <tr>
-      <th>
+      <td>
         <pre><code>{{ sample.stdin }}</code></pre>
-      </th>
+      </td>
       <td>
         <pre><code>{{ sample.stdout }}</code></pre>
       </td>

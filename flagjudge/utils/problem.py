@@ -6,6 +6,7 @@ from flagjudge._typing.problem import *
 from flagjudge.db import get_db
 
 
+@app.cli.command("preload")
 def preload_problems() -> None:
     """Preloads problems into the database."""
     data_root = Path(app.root_path) / ".." / "data"
