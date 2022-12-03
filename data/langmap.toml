@@ -1,3 +1,11 @@
-c = "C (GCC 10.2.0)"
-cpp = "C++ (GCC 10.2.0)"
-python = "Python (CPython 3.10.0)"
+[[languages]]
+id = "c"
+name = "C (GCC 10.2.0)"
+
+[[languages]]
+id = "cpp"
+name = "C++ (GCC 10.2.0)"
+
+[[languages]]
+id = "python"
+name = "Python (CPython 3.10.0)"

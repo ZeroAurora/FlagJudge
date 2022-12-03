@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+
 {% block title %}FlagJudge - {{ problem.title }}{% endblock title %}
+
 {% block container %}
 <h1>{{ problem.title }}</h1>
 <p>
@@ -30,25 +32,19 @@
     {% endfor %}
   </tbody>
 </table>
-<!--TODO-->
 <h2>提交代码</h2>
-<div class="border" id="monaco" style="height: 50vh;"></div>
+<select class="form-select" id="langsel">
+  {% for language in languages %}
+  <option value="{{ language.id }}" data-monacoid="{{ language.monacoid }}">
+    {{ language.name }}
+  </option>
+  {% endfor %}
+</select>
+<div class="border my-2" id="monaco" style="height: 50vh;"></div>
+<button class="btn btn-primary" type="submit" id="submit">提交</button>
 {% endblock container %}
+
 {% block jsarea %}
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs/loader.js"></script>
-<script>
-  require.config({
-    paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs" },
-  });
-
-  require(["vs/editor/editor.main"], function () {
-    var editor = monaco.editor.create(document.getElementById("monaco"), {
-      minimap: {
-        enabled: false,
-      },
-      value: "",
-      language: "python",
-    });
-  });
-</script>
+<script src="/static/js/problem-editor.js"></script>
 {% endblock jsarea %}

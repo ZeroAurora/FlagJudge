@@ -8,7 +8,7 @@
     <th scope="col">题目</th>
   </thead>
   <tbody>
-    {% for problem in problems.values() %}
+    {% for problem in problems %}
     <tr>
       <th scope="row">{{ problem.id }}</th>
       <td><a href="/{{ problem.id }}/">{{ problem.title }}</a></td>

@@ -1,12 +1,13 @@
 import tomllib
+from functools import cache
 from pathlib import Path
 
 from flagjudge import app
 from flagjudge._typing.language import *
 
-DATA_ROOT = Path(app.root_path) / ".." / "data"
-
-
-def load_languages() -> Languages:
-    with open(DATA_ROOT / "langmap.toml", "rb") as f:
-        return tomllib.load(f)
+# I'm lazy so caching to database is gugugu-ed 
+@cache
+def load_languages() -> list[Language]:
+    langmap_path = Path(app.root_path) / ".." / "data" / "langmap.toml"
+    with open(langmap_path, "rb") as f:
+        return tomllib.load(f)["languages"]

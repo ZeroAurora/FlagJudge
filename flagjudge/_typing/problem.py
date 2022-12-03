@@ -7,11 +7,15 @@ class Case(TypedDict):
     stdout: str
 
 
-CaseList = list[Case]
+class SimpleProblem(TypedDict):
+    id: int
+    title: str
+
 
 class Limit(TypedDict):
     time: float
     memory: float
+
 
 class Problem(TypedDict):
     id: int
@@ -22,6 +26,3 @@ class Problem(TypedDict):
     flag: str
     limit: Limit
     samples: list[Case]
-
-
-Problems = dict[int, Problem]
