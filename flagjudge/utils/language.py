@@ -8,6 +8,6 @@ from flagjudge._typing.language import *
 # I'm lazy so caching to database is gugugu-ed 
 @cache
 def load_languages() -> list[Language]:
-    langmap_path = Path(app.root_path) / ".." / "data" / "langmap.toml"
+    langmap_path = Path(app.root_path) / ".." / "data" / "languages.toml"
     with open(langmap_path, "rb") as f:
         return tomllib.load(f)["languages"]

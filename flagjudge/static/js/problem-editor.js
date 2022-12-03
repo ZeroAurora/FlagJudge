@@ -17,7 +17,7 @@ require(["vs/editor/editor.main"], function () {
 
   window.addEventListener("resize", function () {
     editor.layout();
-  })
+  });
 
   langSel.addEventListener("change", function () {
     monacoid = langSel.selectedOptions[0].dataset.monacoid;
@@ -35,7 +35,9 @@ require(["vs/editor/editor.main"], function () {
       method: "POST",
       body: form,
     })
-      .then((resp) => resp.text())
-      .then((queueid) => (window.location = `/queue/${queueid}/`));
+      .then((resp) => resp.json())
+      .then((json) => {
+        if (json) window.location = `/queue/${json.submission}/`;
+      });
   });
 });

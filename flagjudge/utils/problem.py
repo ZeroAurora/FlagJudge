@@ -38,8 +38,10 @@ def preload_problems() -> None:
 
 def load_problems() -> list[SimpleProblem]:
     """Load problems from database."""
-    if get_db().execute("SELECT count(*) FROM problem").fetchone()[0] == 0:
-        preload_problems()
+    # due to some weird problems, these two lines won't work
+    # so before running remember to run preload
+    # if get_db().execute("SELECT count(*) FROM problem;").fetchone()[0] == 0:
+    #     preload_problems()
     problems = []
     for row in (
         get_db().execute("SELECT id, title FROM problem ORDER BY id ASC;").fetchall()
@@ -56,14 +58,14 @@ def load_problem(id: int) -> Problem:
     return tomllib.loads(detail_str)  # type: ignore
 
 
-def load_testcases(id: str) -> list[Case]:
+def load_testcases(probid: int) -> list[Case]:
     cases = []
-    prob_root = Path(app.root_path) / ".." / "data" / id
+    prob_root = Path(app.root_path) / ".." / "data" / str(probid)
     for casefile in prob_root.glob("*.case.toml"):
         id = casefile.name.rstrip(".case.toml")
         with open(casefile, "rb") as f:
             case = tomllib.load(f)
         case["id"] = id
         cases.append(case)
-    app.logger.info(f"Loaded testcases of id:{id}")
+    app.logger.info(f"Loaded testcases of id:{probid}")
     return cases

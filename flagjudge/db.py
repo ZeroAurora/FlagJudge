@@ -4,6 +4,7 @@ from flask import g
 
 from flagjudge import app
 
+
 def get_db():
     db_file = app.config["DATABASE"]
     db = getattr(g, '_database', None)

@@ -38,7 +38,7 @@
 <select class="form-select" id="langsel">
   {% for language in languages %}
   <option value="{{ language.id }}" data-monacoid="{{ language.monacoid }}">
-    {{ language.name }}
+    {{ language.name }} - {{ language.version }}
   </option>
   {% endfor %}
 </select>
