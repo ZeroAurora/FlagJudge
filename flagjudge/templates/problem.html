@@ -3,16 +3,22 @@
 {% block title %}FlagJudge - {{ problem.title }}{% endblock title %}
 
 {% block container %}
+<div><a class="link-primary" href="/">返回题目列表</a></div>
+
 <h1>{{ problem.title }}</h1>
+
 <p>
   <b>时间限制：{{ problem.limit.time }} s</b>
   <br />
   <b>内存限制：{{ problem.limit.memory }} mb</b>
 </p>
+
 <h2>题面</h2>
 {{ problem.description|markdown }}
+
 <h2>指示</h2>
 {{ problem.instruction|markdown }}
+
 <h2>样例</h2>
 <table class="table table-bordered">
   <thead>
@@ -25,15 +31,16 @@
     {% for sample in problem.samples %}
     <tr>
       <td>
-        <pre class="bg-code border rounded my-1 px-1"><code>{{ sample.stdin }}</code></pre>
+        <pre class="bg-code border rounded my-1 px-2 py-1"><code>{{ sample.stdin }}</code></pre>
       </td>
       <td>
-        <pre class="bg-code border rounded my-1 px-1"><code>{{ sample.stdout }}</code></pre>
+        <pre class="bg-code border rounded my-1 px-2 py-1"><code>{{ sample.stdout }}</code></pre>
       </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
+
 <h2>提交代码</h2>
 <select class="form-select" id="langsel">
   {% for language in languages %}
@@ -48,5 +55,5 @@
 
 {% block jsarea %}
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs/loader.js"></script>
-<script src="/static/js/problem-editor.js"></script>
+<script src="/static/js/problem.js"></script>
 {% endblock jsarea %}

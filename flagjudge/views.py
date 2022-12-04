@@ -1,18 +1,21 @@
-from datetime import datetime
 import asyncio
+from datetime import datetime
 
-from flask import render_template, request, jsonify
+from flask import jsonify, render_template, request
 
 from flagjudge import app
 from flagjudge.db import get_db
-from flagjudge.utils import problem, language
 from flagjudge.tasks import judge
+from flagjudge.utils import language, problem, site
 
 
 @app.get("/")
 def index():
     problems = problem.load_problems()
-    return render_template("problem_list.html", problems=problems)
+    notification = site.load_notification()
+    return render_template(
+        "problem_list.html", problems=problems, notification=notification
+    )
 
 
 @app.get("/<int:id>/")
@@ -30,8 +33,8 @@ def submit(id: int):
     rowid = (
         get_db()
         .execute(
-            "INSERT INTO submission VALUES (?, ?, ?, ?, ?, ?) RETURNING rowid;",
-            (timestamp, id, lang, code, "", 0),
+            "INSERT INTO submission VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING rowid;",
+            (timestamp, id, lang, code, "", 0, 0),
         )
         .fetchone()[0]
     )
@@ -40,6 +43,18 @@ def submit(id: int):
     return {"submission": rowid}
 
 
-@app.get("/queue/<int:id>")
-def waiting_for_judge():
-    return render_template("waiting_for_judge.html")
+@app.get("/result/<int:id>/")
+def judge_result(id: int):
+    submission = (
+        get_db()
+        .execute("SELECT rowid, * FROM submission WHERE rowid=?;", (id,))
+        .fetchone()
+    )
+    judgelogs = (
+        get_db()
+        .execute("SELECT rowid, * FROM judgelog WHERE submission=?;", (id,))
+        .fetchall()
+    )
+    get_db().execute("UPDATE submission SET visited=1 WHERE rowid=?;", (id,))
+    get_db().commit()
+    return render_template("result.html", submission=submission, judgelogs=judgelogs)

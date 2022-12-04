@@ -4,15 +4,14 @@ import httpx
 
 from flagjudge import app
 from flagjudge.db import get_db
-from flagjudge.utils.problem import load_problem, load_testcases
 from flagjudge.utils.language import load_languages
+from flagjudge.utils.problem import load_problem, load_testcases
 from flagjudge.utils.submission import generate_dynflag
 
 
 def judge(subid: int, probid: int, language: str, code: str):
     prob = load_problem(probid)
     cases = load_testcases(probid)
-    timestamp = datetime.now().timestamp()
     status = 0
     for case in cases:
         try:
@@ -43,10 +42,10 @@ def judge(subid: int, probid: int, language: str, code: str):
             "INSERT INTO judgelog VALUES (?, ?, ?, ?, ?);",
             (
                 subid,
-                timestamp,
+                datetime.now().timestamp(),
                 case["stdin"],
                 output["run"]["stdout"],
-                output.get("compile", {}).get("stderr", ""),
+                output.get("compile", {}).get("stderr", "") or output["run"]["stderr"],
             ),
         )
         get_db().commit()
@@ -60,7 +59,7 @@ def judge(subid: int, probid: int, language: str, code: str):
 
     get_db().execute(
         "UPDATE submission SET flag=?, status=? WHERE rowid=?;",
-        (generate_dynflag(prob["flag"], str(timestamp)), status, subid),
+        (generate_dynflag(prob["flag"], code), status, subid),
     )
     get_db().commit()
 

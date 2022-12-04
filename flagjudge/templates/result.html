@@ -1,0 +1,71 @@
+{% set status = {
+  1: ("text-success", "Accepted", "答案正确"),
+  2: ("text-danger", "Wrong Answer", "答案错误"),
+  3: ("text-warning", "Time Limit Excceed", "运行超时"),
+  4: ("text-warning", "Output Limit Excceed", "输出超限"),
+  5: ("text-dark", "Runtime Error", "运行出错"),
+  6: ("text-dark", "Compiler Error", "编译出错")
+}[submission[6]] %}
+
+{% extends "base.html" %}
+
+{% block title %}FlagJudge - 评测结果页{% endblock title %}
+
+{% block container %}
+<div>
+  <a class="link-primary" href="/">返回题目列表</a>
+  <a class="link-primary" href="/{{ submission[2] }}/">返回题目</a>
+</div>
+
+<div class="text-muted">
+  <div><small>题目编号：{{ submission[2] }}</small></div>
+  <div><small>全局提交编号：{{ submission[0] }}</small></div>
+</div>
+
+<div class="my-2">
+  <b class="fs-1 {{ status[0] }}">{{ status[1] }}</b>
+  <span class="mx-1 fs-5 text-muted">{{ status[2] }}</span>
+</div>
+
+{% if submission[6] == 1 and submission[7] != 1 %}
+<div class="alert alert-success" role="alert">
+  <div>你完成了题目，得到了 Flag！</div>
+  <div>Flag: {{ submission[5] }}</div>
+  <div><strong>Flag 仅会显示一次，请立即提交。请注意，向他人泄露 Flag 是违反比赛纪律的行为。</strong></div>
+</div>
+{% elif submission[6] == 1 and submission[7] == 1 %}
+<div class="alert alert-info" role="alert">
+  Flag 已经被查看过了。
+</div>
+{% else %}
+<div class="alert alert-info" role="alert">
+  你需要完成题目才能拿到 Flag。
+</div>
+{% endif %}
+
+<h3>标准错误输出</h3>
+
+<ul class="nav nav-tabs" id="stderrTab" role="tablist">
+  {% for judgelog in judgelogs %}
+  <li class="nav-item" role="presentation">
+    <button class="nav-link {{ 'active' if loop.first }}" id="judgelog-{{ loop.index }}-tab" data-bs-toggle="tab"
+      data-bs-target="#judgelog-{{ loop.index }}-pane" type="button" role="tab">
+      {{ loop.index }}
+    </button>
+  </li>
+  {% endfor %}
+</ul>
+
+<div class="tab-content" id="stderrTabContent">
+  {% for judgelog in judgelogs %}
+  <div class="tab-pane fade {{ 'show active' if loop.first }}" id="judgelog-{{ loop.index }}-pane" role="tabpanel" tabindex="0">
+    <pre class="bg-code border rounded my-1 px-2 py-1"><code>{{ judgelog[5] or "本次评测无错误输出。" }}</code></pre>
+  </div>
+  {% endfor %}
+</div>
+{% endblock container %}
+
+{% block jsarea %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+<script src="/static/js/result.js"></script>
+{% endblock jsarea %}

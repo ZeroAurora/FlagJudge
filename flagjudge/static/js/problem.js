@@ -37,7 +37,18 @@ require(["vs/editor/editor.main"], function () {
     })
       .then((resp) => resp.json())
       .then((json) => {
-        if (json) window.location = `/queue/${json.submission}/`;
+        if (json) window.location = `/result/${json.submission}/`;
+        else throw Error("Unable to judge");
+      })
+      .catch(() => {
+        submitBtn.classList.remove("btn-primary");
+        submitBtn.classList.add("btn-danger");
+        submitBtn.innerHTML = "评测出现未知错误，请刷新页面，如反复出错请联系比赛管理员";
       });
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `
+      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      正在评测，请稍等
+    `;
   });
 });

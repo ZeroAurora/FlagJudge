@@ -1,2 +1,2 @@
-DATABASE = "database.db"
+DATABASE = "data/database.db"
 PISTON_URL = "http://localhost:2000"
