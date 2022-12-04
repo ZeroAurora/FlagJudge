@@ -11,4 +11,6 @@ WIP.
 
 ## License
 
-GLWTPL
+[GLWTPL](./GLWTPL). Good luck.
+
+Also dual licensed under [UNLICENSE](./UNLICENSE) if you need a OSI-approved public domain license.
