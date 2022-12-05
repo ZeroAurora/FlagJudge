@@ -81,6 +81,7 @@ def submit_to_piston(language: str, code: str, stdin: str, timeout: int, memlimi
             "run_timeout": timeout,
             "run_memory_limit": memlimit,
         },
+        timeout=15,
     )
     if r.status_code != 200:
         raise Exception(r.text)
