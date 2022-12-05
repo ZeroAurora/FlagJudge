@@ -44,9 +44,11 @@
 <h2>提交代码</h2>
 <select class="form-select" id="langsel">
   {% for language in languages %}
+  {% if language.id in problem.accepted_languages %}
   <option value="{{ language.id }}" data-monacoid="{{ language.monacoid }}">
     {{ language.name }} - {{ language.version }}
   </option>
+  {% endif %}
   {% endfor %}
 </select>
 <div class="border my-2" id="monaco" style="height: 50vh;"></div>
