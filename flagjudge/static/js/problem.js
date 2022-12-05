@@ -1,6 +1,7 @@
 var monaco; // should be imported in that page
-let langSel = document.querySelector("#langsel");
-let submitBtn = document.querySelector("#submit");
+const langSel = document.querySelector("#langsel");
+const upload = document.querySelector("#upload");
+const submitBtn = document.querySelector("#submit");
 
 require.config({
   paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs" },
@@ -27,6 +28,18 @@ require(["vs/editor/editor.main"], function () {
     );
   });
 
+  upload.addEventListener("click", function () {
+    let input = document.createElement("input");
+    input.type = "file";
+    input.addEventListener("change", function () {
+      input.files[0].text().then(function (content) {
+        editor.setValue(content);
+      });
+      input = null;
+    });
+    input.click();
+  });
+
   submitBtn.addEventListener("click", function () {
     const form = new FormData();
     form.append("language", langSel.value);
@@ -43,7 +56,8 @@ require(["vs/editor/editor.main"], function () {
       .catch(() => {
         submitBtn.classList.remove("btn-primary");
         submitBtn.classList.add("btn-danger");
-        submitBtn.innerHTML = "评测出现未知错误，请刷新页面，如反复出错请联系比赛管理员";
+        submitBtn.innerHTML =
+          "评测出现未知错误，请刷新页面，如反复出错请联系比赛管理员";
       });
     submitBtn.disabled = true;
     submitBtn.innerHTML = `
