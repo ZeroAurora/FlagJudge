@@ -1,27 +1,45 @@
-import asyncio
 from datetime import datetime
 
-from flask import jsonify, render_template, request
+from flask import render_template, request
 
 from flagjudge import app
 from flagjudge.db import get_db
 from flagjudge.tasks import judge
-from flagjudge.utils import language, problem, site
+from flagjudge.utils.language import load_languages
+from flagjudge.utils.problem import load_problems, load_problem
+from flagjudge.utils.site import load_notification
 
 
 @app.get("/")
 def index():
-    problems = problem.load_problems()
-    notification = site.load_notification()
+    problems = load_problems()
+    notification = load_notification()
+
+    count = {}
+    for prob in problems:
+        tried = (
+            get_db()
+            .execute("SELECT count(*) FROM submission WHERE problem=?;", (prob["id"],))
+            .fetchone()[0]
+        )
+        passed = (
+            get_db()
+            .execute(
+                "SELECT count(*) FROM submission WHERE problem=? AND status=1;",
+                (prob["id"],),
+            )
+            .fetchone()[0]
+        )
+        count[prob["id"]] = {"tried": tried, "passed": passed}
     return render_template(
-        "problem_list.html", problems=problems, notification=notification
+        "problem_list.html", problems=problems, notification=notification, count=count
     )
 
 
 @app.get("/<int:id>/")
 def get_problem(id: int):
-    prob = problem.load_problem(id)
-    lang = language.load_languages()
+    prob = load_problem(id)
+    lang = load_languages()
     return render_template("problem.html", problem=prob, languages=lang)
 
 

@@ -8,12 +8,16 @@
   <thead>
     <th scope="col">#</th>
     <th scope="col">题目</th>
+    <th scope="col">总提交次数</th>
+    <th scope="col">通过次数</th>
   </thead>
   <tbody>
     {% for problem in problems %}
     <tr>
       <th scope="row">{{ problem.id }}</th>
       <td><a href="/{{ problem.id }}/">{{ problem.title }}</a></td>
+      <td>{{ count[problem.id].tried }}</td>
+      <td>{{ count[problem.id].passed }}</td>
     </tr>
     {% endfor %}
   </tbody>
