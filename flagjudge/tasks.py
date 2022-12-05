@@ -45,7 +45,7 @@ def judge(subid: int, probid: int, language: str, code: str):
                 datetime.now().timestamp(),
                 case["stdin"],
                 output["run"]["stdout"],
-                output.get("compile", {}).get("stderr", "") or output["run"]["stderr"],
+                output.get("compile", {}).get("stderr", ""),
             ),
         )
         get_db().commit()
