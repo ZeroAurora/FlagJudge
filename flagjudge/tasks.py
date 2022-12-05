@@ -24,15 +24,15 @@ def judge(subid: int, probid: int, language: str, code: str):
             )
         except Exception as e:
             app.logger.exception(e)
-            status = 7
+            status = 6
             break
 
         if output.get("compile", {}).get("code", 0) != 0:
-            status = 6  # CE
+            status = 5  # CE
         elif output["run"]["signal"] == "SIGKILL":
-            status = 3  # TLE
+            status = 3  # RsE
         elif output["run"]["code"] != 0:
-            status = 5  # RE
+            status = 4  # RE
         else:
             stdout: str = output["run"]["stdout"]
             if stdout.rstrip() != case["stdout"].rstrip():
@@ -79,7 +79,9 @@ def submit_to_piston(language: str, code: str, stdin: str, timeout: int, memlimi
             "files": [{"content": code}],
             "stdin": stdin,
             "run_timeout": timeout,
+            "compile_timeout": timeout,
             "run_memory_limit": memlimit,
+            "compile_memory_limit": memlimit,
         },
         timeout=15,
     )

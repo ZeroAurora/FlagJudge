@@ -1,11 +1,10 @@
 {% set status = {
   1: ("text-success", "Accepted", "答案正确"),
   2: ("text-danger", "Wrong Answer", "答案错误"),
-  3: ("text-warning", "Time Limit Excceed", "运行超时"),
-  4: ("text-warning", "Output Limit Excceed", "输出超限"),
-  5: ("text-dark", "Runtime Error", "运行出错"),
-  6: ("text-dark", "Compiler Error", "编译出错"),
-  7: ("text-dark", "Unknown Error", "未知错误，请重试或联系管理员")
+  3: ("text-warning", "Resource Excceed", "资源超限（运行超时/内存超限等）"),
+  4: ("text-dark", "Runtime Error", "运行出错"),
+  5: ("text-dark", "Compiler Error", "编译出错"),
+  6: ("text-dark", "Unknown Error", "未知错误，请重试或联系管理员")
 }[submission[6]] %}
 
 {% extends "base.html" %}
