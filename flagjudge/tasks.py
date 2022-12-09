@@ -12,6 +12,7 @@ from flagjudge.utils.submission import generate_dynflag
 def judge(subid: int, probid: int, language: str, code: str):
     prob = load_problem(probid)
     cases = load_testcases(probid)
+    app.logger.debug(cases)
     status = 0
     for case in cases:
         try:
@@ -22,6 +23,7 @@ def judge(subid: int, probid: int, language: str, code: str):
                 int(prob["limit"]["time"] * 1000),
                 int(prob["limit"]["memory"] * 1024 * 1024),
             )
+
         except Exception as e:
             app.logger.exception(e)
             status = 6

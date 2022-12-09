@@ -60,8 +60,12 @@ def load_problem(id: int) -> Problem:
 
 def load_testcases(probid: int) -> list[Case]:
     cases = []
-    prob_root = Path(app.root_path) / ".." / "data" / str(probid)
-    for casefile in prob_root.glob("*.case.toml"):
+    prob_path = Path(
+        get_db()
+        .execute("SELECT path FROM problem WHERE id=?;", (probid,))
+        .fetchone()[0]
+    )
+    for casefile in prob_path.glob("*.case.toml"):
         id = casefile.name.rstrip(".case.toml")
         with open(casefile, "rb") as f:
             case = tomllib.load(f)
