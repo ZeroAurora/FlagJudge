@@ -2,6 +2,10 @@
 
 {% block title %}FlagJudge - {{ problem.title }}{% endblock title %}
 
+{% block headarea %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" crossorigin="anonymous">
+{% endblock headarea %}
+
 {% block container %}
 <div><a class="link-primary" href="/">返回题目列表</a></div>
 
@@ -59,6 +63,8 @@
 {% endblock container %}
 
 {% block jsarea %}
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs/loader.js"></script>
 <script src="/static/js/problem.js"></script>
 {% endblock jsarea %}

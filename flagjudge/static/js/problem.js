@@ -1,4 +1,3 @@
-var monaco; // should be imported in that page
 const langSel = document.querySelector("#langsel");
 const upload = document.querySelector("#upload");
 const submitBtn = document.querySelector("#submit");
@@ -64,5 +63,14 @@ require(["vs/editor/editor.main"], function () {
       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       正在评测，请稍等
     `;
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "$", right: "$", display: false },
+    ],
   });
 });
