@@ -50,11 +50,12 @@ def load_problems() -> list[SimpleProblem]:
     return problems
 
 
-def load_problem(id: int) -> Problem:
+def load_problem(id: int) -> Problem | None:
     """Load a problem from database."""
     detail_str = (
-        get_db().execute("SELECT detail FROM problem WHERE id=?;", (id,)).fetchone()[0]
-    )
+        get_db().execute("SELECT detail FROM problem WHERE id=?;", (id,)).fetchone()
+        or [""]
+    )[0]
     return tomllib.loads(detail_str)  # type: ignore
 
 

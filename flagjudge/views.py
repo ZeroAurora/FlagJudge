@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import render_template, request
+from flask import render_template, request, abort
 
 from flagjudge import app
 from flagjudge.db import get_db
@@ -40,7 +40,10 @@ def index():
 def get_problem(id: int):
     prob = load_problem(id)
     lang = load_languages()
-    return render_template("problem.html", problem=prob, languages=lang)
+    if prob:
+        return render_template("problem.html", problem=prob, languages=lang)
+    else:
+        return render_template("problem_404.html"), 404
 
 
 @app.post("/<int:id>/submit/")
@@ -68,11 +71,15 @@ def judge_result(id: int):
         .execute("SELECT rowid, * FROM submission WHERE rowid=?;", (id,))
         .fetchone()
     )
-    judgelogs = (
-        get_db()
-        .execute("SELECT rowid, * FROM judgelog WHERE submission=?;", (id,))
-        .fetchall()
-    )
-    get_db().execute("UPDATE submission SET visited=1 WHERE rowid=?;", (id,))
-    get_db().commit()
-    return render_template("result.html", submission=submission, judgelogs=judgelogs)
+    if submission:
+        judgelogs = (
+            get_db()
+            .execute("SELECT rowid, * FROM judgelog WHERE submission=?;", (id,))
+            .fetchall()
+        )
+        app.logger.info(submission)
+        get_db().execute("UPDATE submission SET visited=1 WHERE rowid=?;", (id,))
+        get_db().commit()
+        return render_template("result.html", submission=submission, judgelogs=judgelogs)
+    else:
+        return render_template("result_404.html"), 404

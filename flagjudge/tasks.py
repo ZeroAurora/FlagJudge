@@ -12,7 +12,8 @@ from flagjudge.utils.submission import generate_dynflag
 def judge(subid: int, probid: int, language: str, code: str):
     prob = load_problem(probid)
     cases = load_testcases(probid)
-    app.logger.debug(cases)
+    assert prob
+
     status = 0
     for case in cases:
         try:
