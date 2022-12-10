@@ -43,9 +43,9 @@
 </div>
 {% endif %}
 
-<h3>编译器标准错误输出（仅显示首次编译）</h3>
+<h3>标准错误输出（仅显示首次评测）</h3>
 
-<pre class="bg-code border rounded my-1 px-2 py-1"><code>{{ judgelogs[0][5] or "编译器无错误输出或选择的语言没有编译阶段。" }}</code></pre>
+<pre class="bg-code border rounded my-1 px-2 py-1"><code>{{ judgelogs[0][5] or "无错误输出。" }}</code></pre>
 
 {% endblock container %}
 
