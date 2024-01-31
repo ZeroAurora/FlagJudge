@@ -1,12 +1,12 @@
 from datetime import datetime
 
-import httpx
+import requests
 
 from flagjudge import app
 from flagjudge.db import get_db
 from flagjudge.utils.language import load_languages
 from flagjudge.utils.problem import load_problem, load_testcases
-from flagjudge.utils.submission import generate_dynflag
+from flagjudge.utils.submission import generate_dynflag, strip_stdout
 
 
 def judge(subid: int, probid: int, language: str, code: str):
@@ -25,8 +25,8 @@ def judge(subid: int, probid: int, language: str, code: str):
                 int(prob["limit"]["memory"] * 1024 * 1024),
             )
 
-        except Exception as e:
-            app.logger.exception(e)
+        except Exception:
+            app.logger.exception("")
             status = 6
             break
 
@@ -38,7 +38,7 @@ def judge(subid: int, probid: int, language: str, code: str):
             status = 4  # RE
         else:
             stdout: str = output["run"]["stdout"]
-            if stdout.rstrip() != case["stdout"].rstrip():
+            if strip_stdout(stdout) != case["stdout"].rstrip():
                 status = 2  # WA
 
         get_db().execute(
@@ -62,19 +62,16 @@ def judge(subid: int, probid: int, language: str, code: str):
 
     get_db().execute(
         "UPDATE submission SET flag=?, status=? WHERE rowid=?;",
-        (generate_dynflag(prob["flag"], code), status, subid),
+        (generate_dynflag(prob["flag"], probid), status, subid),
     )
     get_db().commit()
 
 
 def submit_to_piston(language: str, code: str, stdin: str, timeout: int, memlimit: int):
     langs = load_languages()
-    version = ""
-    for lang in langs:
-        if lang["id"] == language:
-            version = lang["version"]
+    version = next(filter(lambda x: x["id"] == language, langs))["version"]
 
-    r = httpx.post(
+    r = requests.post(
         f"{app.config['PISTON_URL']}/api/v2/execute",
         json={
             "language": language,
@@ -82,13 +79,14 @@ def submit_to_piston(language: str, code: str, stdin: str, timeout: int, memlimi
             "files": [{"content": code}],
             "stdin": stdin,
             "run_timeout": timeout,
-            "compile_timeout": timeout,
+            "compile_timeout": 10,
             "run_memory_limit": memlimit,
-            "compile_memory_limit": memlimit,
+            "compile_memory_limit": 512 * 1024 * 1024,
         },
         timeout=15,
     )
     if r.status_code != 200:
-        raise Exception(r.text)
+        app.logger.error(r.status_code)
+        raise Exception()
     output = r.json()
     return output

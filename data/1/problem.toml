@@ -6,7 +6,7 @@ A+B Problem
 instruction = '''
 '''
 accepted_languages = ["c", "cpp", "python"]
-flag = "Flag{A+B=C}"
+flag = "Flag{{hash}}"
 
 [limit]
 time = 1 # in s

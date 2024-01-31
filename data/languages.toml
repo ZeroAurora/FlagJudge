@@ -11,4 +11,4 @@ version = "10.2.0"
 [[languages]]
 id = "python"
 name = "Python (CPython)"
-version = "3.10.0"
+version = "3.12.0"

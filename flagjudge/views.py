@@ -80,6 +80,8 @@ def judge_result(id: int):
         app.logger.info(submission)
         get_db().execute("UPDATE submission SET visited=1 WHERE rowid=?;", (id,))
         get_db().commit()
-        return render_template("result.html", submission=submission, judgelogs=judgelogs)
+        return render_template(
+            "result.html", submission=submission, judgelogs=judgelogs
+        )
     else:
         return render_template("result_404.html"), 404
