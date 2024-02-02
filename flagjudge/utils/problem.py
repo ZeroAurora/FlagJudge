@@ -1,3 +1,4 @@
+from functools import cache
 import tomllib
 from pathlib import Path
 
@@ -59,6 +60,7 @@ def load_problem(id: int) -> Problem | None:
     return tomllib.loads(detail_str)  # type: ignore
 
 
+@cache
 def load_testcases(probid: int) -> list[Case]:
     cases = []
     prob_path = Path(
