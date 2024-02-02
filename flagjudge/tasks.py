@@ -86,7 +86,7 @@ def submit_to_piston(language: str, code: str, stdin: str, timeout: int, memlimi
         timeout=15,
     )
     if r.status_code != 200:
-        app.logger.error(r.status_code)
+        app.logger.error(f"Piston returned {r.status_code}")
         raise Exception()
     output = r.json()
     return output
