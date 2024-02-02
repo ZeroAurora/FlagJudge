@@ -5,8 +5,8 @@ from flask import session
 from flagjudge import app
 
 
-def strip_stdout(stdout: str):
-    return "\n".join([line.strip() for line in stdout.split("\n")])
+def strip(content: str):
+    return "\n".join([line.strip() for line in content.split("\n")])
 
 
 def generate_dynflag(tmpl: str, probid: int):

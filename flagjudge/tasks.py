@@ -6,7 +6,7 @@ from flagjudge import app
 from flagjudge.db import get_db
 from flagjudge.utils.language import load_languages
 from flagjudge.utils.problem import load_problem, load_testcases
-from flagjudge.utils.submission import generate_dynflag, strip_stdout
+from flagjudge.utils.submission import generate_dynflag, strip
 
 
 def judge(subid: int, probid: int, language: str, code: str):
@@ -20,7 +20,7 @@ def judge(subid: int, probid: int, language: str, code: str):
             output = submit_to_piston(
                 language,
                 code,
-                case["stdin"],
+                strip(case["stdin"]),
                 int(prob["limit"]["time"] * 1000),
                 int(prob["limit"]["memory"] * 1024 * 1024),
             )
@@ -38,7 +38,7 @@ def judge(subid: int, probid: int, language: str, code: str):
             status = 4  # RE
         else:
             stdout: str = output["run"]["stdout"]
-            if strip_stdout(stdout) != case["stdout"].rstrip():
+            if strip(stdout) != case["stdout"].rstrip():
                 status = 2  # WA
 
         get_db().execute(
