@@ -20,7 +20,7 @@ def judge(subid: int, probid: int, language: str, code: str):
             output = submit_to_piston(
                 language,
                 code,
-                strip(case["stdin"]),
+                strip(case["stdin"], True),
                 int(prob["limit"]["time"] * 1000),
                 int(prob["limit"]["memory"] * 1024 * 1024),
             )
@@ -38,7 +38,7 @@ def judge(subid: int, probid: int, language: str, code: str):
             status = 4  # RE
         else:
             stdout: str = output["run"]["stdout"]
-            if strip(stdout) != case["stdout"].rstrip():
+            if strip(stdout) != strip(case["stdout"]):
                 status = 2  # WA
 
         get_db().execute(
