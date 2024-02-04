@@ -14,10 +14,9 @@ The templates are in Chinese but that's fine. Just fork and translate it as need
 
 ## Deployment
 
-1. Deploy [Piston](https://github.com/engineer-man/piston) and edit `data/languages.toml` and `config.toml`.
-2. `docker build . --tag flagjudge`
-3. `docker run -it -v $PWD/data:/usr/src/app/data -v $PWD/config.toml:/usr/src/app/config.toml --network host flagjudge`
-4. Visit `ip:8000`
+1. Deploy [Piston](https://github.com/engineer-man/piston) and edit `data/languages.toml` and `config.toml`. Place `cert.pem` in the root folder.
+2. `docker compose up`.
+4. Visit `ip:8000`.
 
 ## Why the name
 

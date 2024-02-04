@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  flagjudge:
+    build: .
+    init: true
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./data:/usr/src/app/data
+      - ./config.toml:/usr/src/app/config.toml
+      - ./cert.pem:/usr/src/app/cert.pem
+    ports:
+      - 8000:8000
