@@ -79,7 +79,7 @@ def submit_to_piston(language: str, code: str, stdin: str, timeout: int, memlimi
             "files": [{"content": code}],
             "stdin": stdin,
             "run_timeout": timeout,
-            "compile_timeout": 10,
+            "compile_timeout": 10000,
             "run_memory_limit": memlimit,
             "compile_memory_limit": 512 * 1024 * 1024,
         },
